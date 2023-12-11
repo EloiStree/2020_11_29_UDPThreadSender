@@ -1,0 +1,23 @@
+
+{                                                                                
+  "name": "be.eloistree.udpthreadsender",                              
+  "displayName": "UDP Thread Sender and receive",                        
+  "version": "0.0.1",                         
+  "unity": "2018.1",                             
+  "unityRelease": "",                             
+  "description": "Quick tool to send and received UDP message.",                         
+  "keywords": ["Script","Tool"],                       
+  "dependencies":{},     
+  "relatedPackages":{},     
+  "samples" : [],     
+  "author" : {
+"name":"",
+"mail":"",
+"url":""},     
+  "repository":{
+"type":"Git",
+"url":"https://gitlab.com/EloiStree/2020_11_29_UDPThreadSender.git",
+"footprint":"",
+"revision":"7a36837fe8a85282606d4c367ae381e1ee4bf6a7"},     
+  "category": "Script"                   
+} 
