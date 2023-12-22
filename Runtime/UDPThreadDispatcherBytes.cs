@@ -8,26 +8,26 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UDPThreadDispatcher : MonoBehaviour
+public class UDPThreadDispatcherBytes : MonoBehaviour
 {
     public int m_portId = 2504;
-    public float m_timeBetweenUnityCheck=0.05f;
-    public StringEvent m_messageReceived;
+    public float m_timeBetweenUnityCheck = 0.05f;
+    public BytesEvent m_messageReceived;
     public System.Threading.ThreadPriority m_threadPriority;
 
-    public Queue<string> m_receivedMessages = new Queue<string>();
-    public string m_lastReceived;
+    public Queue<byte[]> m_receivedMessages = new Queue<byte[]>();
+    public byte[] m_lastReceived;
     private bool m_wantThreadAlive = true;
-    private Thread m_threadListener=null;
+    private Thread m_threadListener = null;
     public UdpClient m_listener;
     public IPEndPoint m_ipEndPoint;
     public bool m_hasBeenKilled;
 
-
     private void Awake()
     {
         InvokeRepeating("PushOnUnityThreadMessage", 0, m_timeBetweenUnityCheck);
-        if (m_threadListener == null) { 
+        if (m_threadListener == null)
+        {
             m_threadListener = new Thread(ChechUdpClientMessageInComing);
             m_threadListener.Priority = m_threadPriority;
             m_threadListener.Start();
@@ -56,13 +56,9 @@ public class UDPThreadDispatcher : MonoBehaviour
         }
     }
 
-    [ContextMenu("Force Kill")]
-    public void ForceKill() {
-        Kill();
-    }
     private void Kill()
     {
-        if(m_listener!=null)
+        if (m_listener != null)
             m_listener.Close();
         if (m_threadListener != null)
             m_threadListener.Abort();
@@ -70,34 +66,35 @@ public class UDPThreadDispatcher : MonoBehaviour
         m_hasBeenKilled = true;
     }
 
-   
 
-    public void PushOnUnityThreadMessage() {
-        while (m_receivedMessages.Count > 0) { 
+
+    public void PushOnUnityThreadMessage()
+    {
+        while (m_receivedMessages.Count > 0)
+        {
             m_lastReceived = m_receivedMessages.Dequeue();
             m_messageReceived.Invoke(m_lastReceived);
         }
     }
 
-    private void ChechUdpClientMessageInComing() {
+    private void ChechUdpClientMessageInComing()
+    {
 
-        if (m_listener == null) { 
+        if (m_listener == null)
+        {
             m_listener = new UdpClient(m_portId);
-            m_ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            m_ipEndPoint = new IPEndPoint(IPAddress.Any, m_portId);
         }
 
-        while (m_wantThreadAlive) { 
+        while (m_wantThreadAlive)
+        {
             try
             {
-
-                Byte[] receiveBytes = m_listener.Receive(ref m_ipEndPoint);
-                string returnData = Encoding.UTF8.GetString(receiveBytes);
-                m_receivedMessages.Enqueue(returnData);
-                //RemoteIpEndPoint.Address.ToString() --  RemoteIpEndPoint.Port.ToString());
+                m_receivedMessages.Enqueue(m_listener.Receive(ref m_ipEndPoint));
             }
             catch (Exception e)
             {
-               Debug.Log(e.ToString());
+                Debug.Log(e.ToString());
                 m_wantThreadAlive = false;
             }
         }
@@ -105,9 +102,9 @@ public class UDPThreadDispatcher : MonoBehaviour
 
 
     [System.Serializable]
-    public class StringEvent : UnityEvent<string>{ 
-    
+    public class BytesEvent : UnityEvent<byte[]>
+    {
+
     }
-    
 }
 

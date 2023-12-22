@@ -24,13 +24,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2653560369374272135}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2319808054104228483}
   m_Father: {fileID: 2653560369680147198}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2653560369374272134
 MonoBehaviour:
@@ -73,7 +74,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2653560369680147198}
-  - component: {fileID: 2085491819}
   m_Layer: 0
   m_Name: UDPThreadManager
   m_TagString: Untagged
@@ -88,30 +88,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2653560369680147197}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 617.38495, y: 506.36798, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2653560369374272129}
   - {fileID: 2653560370036462562}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2085491819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2653560369680147197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10aeac9b3f2f31046afae7c78e3d1bca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_tick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &2653560370036462560
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +108,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2653560370036462562}
   - component: {fileID: 2653560370036462563}
-  - component: {fileID: 265344618}
   m_Layer: 0
   m_Name: Sender
   m_TagString: Untagged
@@ -137,12 +122,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2653560370036462560}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2653560369680147198}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2653560370036462563
 MonoBehaviour:
@@ -166,33 +152,6 @@ MonoBehaviour:
   m_groupAlias: []
   m_lastSent: 
   m_lastException: 
---- !u!114 &265344618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2653560370036462560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10aeac9b3f2f31046afae7c78e3d1bca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_tick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2653560370036462563}
-        m_TargetAssemblyTypeName: UDPThreadSender, be.eloistree.udpthreadsender
-        m_MethodName: ResetTheTargetFromAlias
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &8082494528138916193
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,10 +175,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8082494528138916193}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2653560369374272129}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
