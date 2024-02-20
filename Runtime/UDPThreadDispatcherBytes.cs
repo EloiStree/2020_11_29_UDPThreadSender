@@ -95,9 +95,12 @@ public class UDPThreadDispatcherBytes : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log(e.ToString());
-                m_wantThreadAlive = false;
+                m_listener = new UdpClient(m_portId);
+                m_ipEndPoint = new IPEndPoint(IPAddress.Any, m_portId);
+                m_receivedMessages.Clear();
             }
         }
+        m_wantThreadAlive = false;
     }
 
 
