@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -14,6 +15,18 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
         System.Threading.ThreadPriority.Normal;
 
     public QueueByteToSendOnSideThread m_sendThread;
+
+
+
+    public void EnqueueGivenRef(byte[] toPushBytes)
+    {
+        m_sendThread.EnqueueGivenRef(toPushBytes);
+    }
+    public void EnqueueGivenAsCopy(byte[] toPushBytes)
+    {
+        m_sendThread.EnqueueGivenAsCopy(toPushBytes);
+    }
+
 
     public void Awake()
     {
@@ -82,6 +95,14 @@ public class QueueByteToSendOnSideThread
             t.Abort();
     }
 
+    public void EnqueueGivenRef(byte[] toPushBytes)
+    {
+        m_waitingBytes.Enqueue(toPushBytes);
+    }
+    public void EnqueueGivenAsCopy(byte[] toPushBytes)
+    {
+        m_waitingBytes.Enqueue(toPushBytes.ToArray());
+    }
 
     public QueueByteToSendOnSideThread(System.Threading.ThreadPriority priority) {
       t= new Thread(new ThreadStart(PushInQueueAndWait));
