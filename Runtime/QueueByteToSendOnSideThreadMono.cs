@@ -16,7 +16,8 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
 
     public QueueByteToSendOnSideThread m_sendThread;
 
-
+    public int m_targetCount;
+    public int m_messageInQueueCount;
 
     public void EnqueueGivenRef(byte[] toPushBytes)
     {
@@ -27,10 +28,18 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
         m_sendThread.EnqueueGivenAsCopy(toPushBytes);
     }
 
-
+    private void Update()
+    {
+        m_messageInQueueCount = m_sendThread.m_waitingBytes.Count;
+        m_targetCount = m_targetAddresses.Count;
+    }
     public void Awake()
     {
         m_sendThread = new QueueByteToSendOnSideThread(m_threadPriority);
+        foreach (var item in m_targetAddresses)
+        {
+            m_sendThread.TryToAddAddress(item);
+        }
     }
 
     public void OnDestroy()
