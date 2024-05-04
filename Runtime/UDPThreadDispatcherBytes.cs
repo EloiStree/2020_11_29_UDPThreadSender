@@ -25,7 +25,7 @@ public class UDPThreadDispatcherBytes : MonoBehaviour
 
     private void Awake()
     {
-        InvokeRepeating("PushOnUnityThreadMessage", 0, m_timeBetweenUnityCheck);
+        // InvokeRepeating("PushOnUnityThreadMessage", 0, m_timeBetweenUnityCheck);
         if (m_threadListener == null)
         {
             m_threadListener = new Thread(ChechUdpClientMessageInComing);
@@ -33,6 +33,12 @@ public class UDPThreadDispatcherBytes : MonoBehaviour
             m_threadListener.Start();
         }
     }
+
+    private void Update()
+    {
+        PushOnUnityThreadMessage();
+    }
+
     public void OnDisable()
     {
         if (!m_hasBeenKilled)
@@ -95,9 +101,12 @@ public class UDPThreadDispatcherBytes : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log(e.ToString());
-                m_wantThreadAlive = false;
+                m_listener = new UdpClient(m_portId);
+                m_ipEndPoint = new IPEndPoint(IPAddress.Any, m_portId);
+                m_receivedMessages.Clear();
             }
         }
+        m_wantThreadAlive = false;
     }
 
 
