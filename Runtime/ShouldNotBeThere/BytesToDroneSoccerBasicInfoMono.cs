@@ -1,9 +1,17 @@
+<<<<<<< HEAD:Runtime/BytesToDroneSoccerBasicInfoMono.cs
 //using System;
 //using System.Collections;
 //using System.Collections.Generic;
 //using System.Diagnostics.Eventing.Reader;
 //using UnityEngine;
 //using UnityEngine.Events;
+=======
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+>>>>>>> 90d071d3a4eb2d1668702c7e30e20fa33079c5f1:Runtime/ShouldNotBeThere/BytesToDroneSoccerBasicInfoMono.cs
 
 //public class BytesToDroneSoccerBasicInfoMono : MonoBehaviour
 //{
@@ -57,6 +65,7 @@
 //        }
 //    }
 
+<<<<<<< HEAD:Runtime/BytesToDroneSoccerBasicInfoMono.cs
 //    private void PushValideByte(byte id, byte[] bytes)
 //    { 
 //        m_onByteArrayReceived.Invoke(id, bytes);
@@ -80,3 +89,10 @@
 //    public Quaternion m_rotation;
 
 //}
+=======
+    private void PushValideByte(byte id, byte[] bytes)
+    { 
+        m_onByteArrayReceived.Invoke(id, bytes);
+    }
+}
+>>>>>>> 90d071d3a4eb2d1668702c7e30e20fa33079c5f1:Runtime/ShouldNotBeThere/BytesToDroneSoccerBasicInfoMono.cs
