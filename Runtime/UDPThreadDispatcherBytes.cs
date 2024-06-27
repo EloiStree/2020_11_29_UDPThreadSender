@@ -22,9 +22,12 @@ public class UDPThreadDispatcherBytes : MonoBehaviour
     public UdpClient m_listener;
     public IPEndPoint m_ipEndPoint;
     public bool m_hasBeenKilled;
+    public float m_timeBeforeStartThread = 0.1f;
 
-    private void Awake()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(m_timeBeforeStartThread);
+        Debug.Log($"Listent port {m_portId}", this.gameObject);
         // InvokeRepeating("PushOnUnityThreadMessage", 0, m_timeBetweenUnityCheck);
         if (m_threadListener == null)
         {
@@ -32,6 +35,11 @@ public class UDPThreadDispatcherBytes : MonoBehaviour
             m_threadListener.Priority = m_threadPriority;
             m_threadListener.Start();
         }
+    }
+
+    public void SetPortBeforeStart(int port)
+    {
+        m_portId = port;
     }
 
     private void Update()

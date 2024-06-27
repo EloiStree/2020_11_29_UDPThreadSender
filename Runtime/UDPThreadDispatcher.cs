@@ -23,15 +23,22 @@ public class UDPThreadDispatcher : MonoBehaviour
     public IPEndPoint m_ipEndPoint;
     public bool m_hasBeenKilled;
 
-
-    private void Awake()
+    public float m_timeBetweenStartThread = 0.1f;
+    private IEnumerator Start()
     {
         InvokeRepeating("PushOnUnityThreadMessage", 0, m_timeBetweenUnityCheck);
+
+        yield return new WaitForSeconds(m_timeBetweenStartThread);
         if (m_threadListener == null) { 
             m_threadListener = new Thread(ChechUdpClientMessageInComing);
             m_threadListener.Priority = m_threadPriority;
             m_threadListener.Start();
         }
+    }
+
+    public void SetPortBeforeStart(int port)
+    {
+        m_portId = port;
     }
     public void OnDisable()
     {

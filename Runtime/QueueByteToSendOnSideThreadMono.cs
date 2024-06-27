@@ -16,8 +16,34 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
 
     public QueueByteToSendOnSideThread m_sendThread;
 
+
+
     public int m_targetCount;
     public int m_messageInQueueCount;
+    public float m_startDelay = 0.1f;
+
+    public void FlushTarget()
+    {
+        m_targetAddresses.Clear();
+    }
+    public void AddTarget(string target)
+    {
+        m_targetAddresses.Add(target);
+    }
+    public void AddTargets(IEnumerable<string> targets)
+    {
+        m_targetAddresses.AddRange(targets);
+    }
+    public void AddTargetsFromTextLineSplit(string text)
+    {
+        m_targetAddresses.AddRange(text.Split('\n').Select(x => x.Trim()).Where(x => x.Length > 0));
+    }
+
+    public void SetWithOnePort(int port)
+    {
+        m_targetAddresses.Clear();
+        m_targetAddresses.Add("127.0.0.1:" + port);
+    }
 
     public void EnqueueGivenRef(byte[] toPushBytes)
     {
@@ -33,8 +59,9 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
         m_messageInQueueCount = m_sendThread.m_waitingBytes.Count;
         m_targetCount = m_targetAddresses.Count;
     }
-    public void Awake()
+    public IEnumerator Start()
     {
+        yield return new WaitForSeconds(m_startDelay);
         m_sendThread = new QueueByteToSendOnSideThread(m_threadPriority);
         foreach (var item in m_targetAddresses)
         {
