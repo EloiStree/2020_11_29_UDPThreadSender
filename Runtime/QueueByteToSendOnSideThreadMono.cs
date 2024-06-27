@@ -56,6 +56,16 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
 
     private void Update()
     {
+        if(m_sendThread==null)
+        {
+            return;
+        }
+        if(m_sendThread.m_waitingBytes==null)
+        {
+            return;
+        }
+
+        
         m_messageInQueueCount = m_sendThread.m_waitingBytes.Count;
         m_targetCount = m_targetAddresses.Count;
     }
