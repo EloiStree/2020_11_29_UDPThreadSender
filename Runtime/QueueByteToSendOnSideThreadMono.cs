@@ -22,7 +22,7 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
     public int m_messageInQueueCount;
     public float m_startDelay = 0.1f;
 
-    public void FlushTarget()
+    public void FlushTargets()
     {
         m_targetAddresses.Clear();
     }
