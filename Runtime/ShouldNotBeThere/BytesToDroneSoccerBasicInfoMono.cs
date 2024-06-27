@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -61,22 +60,4 @@ public class BytesToDroneSoccerBasicInfoMono : MonoBehaviour
     { 
         m_onByteArrayReceived.Invoke(id, bytes);
     }
-}
-
-[System.Serializable]
-public class DronePositionsFrame
-{
-    public long m_timeServer;
-    public long m_frameId;
-    public List<DroneSoccerPosition> m_drones = new List<DroneSoccerPosition>();
-}
-[System.Serializable]
-public class DroneSoccerPosition
-{
-
-    public int m_indexId_0_11;
-    public int m_droneId_1_12;
-    public Vector3 m_position;
-    public Quaternion m_rotation;
-
 }
