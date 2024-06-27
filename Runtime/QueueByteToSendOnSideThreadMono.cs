@@ -47,11 +47,13 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
 
     public void EnqueueGivenRef(byte[] toPushBytes)
     {
-        m_sendThread.EnqueueGivenRef(toPushBytes);
+        if (m_sendThread != null)
+            m_sendThread.EnqueueGivenRef(toPushBytes);
     }
     public void EnqueueGivenAsCopy(byte[] toPushBytes)
     {
-        m_sendThread.EnqueueGivenAsCopy(toPushBytes);
+        if (m_sendThread != null)
+            m_sendThread.EnqueueGivenAsCopy(toPushBytes);
     }
 
     public ulong m_runningTick;
@@ -105,7 +107,8 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
     }
     public void OnDestroy()
     {
-        m_sendThread.StopThread();
+        if (m_sendThread != null)
+            m_sendThread.StopThread();
     }
 
     public void Reset()
