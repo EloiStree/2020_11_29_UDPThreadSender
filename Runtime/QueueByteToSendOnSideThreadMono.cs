@@ -70,7 +70,8 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
 
         m_messageInQueueCount = m_sendThread.GetWaitingBytes();
         m_targetCount = m_targetAddresses.Count;
-        m_targetEndPointCount = m_sendThread.m_endpoints.Count;
+
+        m_targetEndPointCount = m_sendThread.GetEndPointsCount();
     }
     public IEnumerator Start()
     {
@@ -115,22 +116,35 @@ public class QueueByteToSendOnSideThreadMono : MonoBehaviour
     {
         m_targetAddresses.Add("127.0.0.1:4657");
     }
+
+    [ContextMenu("Push Random Integer")]
+    public void PushRandomInteger()
+    {
+
+        byte[] b = BitConverter.GetBytes(UnityEngine.Random.Range(int.MinValue, int.MaxValue));
+        EnqueueGivenAsCopy(b);
+    }
+    public void PushInteger(int value)
+    {
+        byte[] b = BitConverter.GetBytes(value);
+        EnqueueGivenAsCopy(b);
+    }
 }
 
 [System.Serializable]
 public class QueueByteToSendOnSideThread
 {
-    public ulong m_runningTick;
-    public void StopThread() { m_keepAlive = false; }
-
-
-    bool m_keepAlive = true;
     Thread t;
+    public ulong m_runningTick;
+    bool m_keepAlive = true;
     private Queue<byte[]> m_waitingBytes = new Queue<byte[]>();
-
-
     public List<IPEndPoint> m_endpoints = new List<IPEndPoint>();
+    public string m_lastSent = "";
+    public ulong m_sentByteCount;
+    public long m_sentTime;
 
+
+    public void StopThread() { m_keepAlive = false; }
     public void ClearEndPoints()
     {
         m_endpoints.Clear();
@@ -151,9 +165,6 @@ public class QueueByteToSendOnSideThread
     }
     //    endpoints.Add(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 4567));
 
-    public string m_lastSent="";
-    public ulong m_sentByteCount;
-    public long m_sentTime;
     private void PushInQueueAndWait()
     {
         m_runningTick = (ulong)DateTime.Now.Ticks;
@@ -185,36 +196,63 @@ public class QueueByteToSendOnSideThread
 
     public void EnqueueGivenRef(byte[] toPushBytes)
     {
+        if(toPushBytes==null)
+        {
+            return;
+        }
+        if (m_waitingBytes == null)
+        {
+            m_waitingBytes = new Queue<byte[]>();
+        }
         m_waitingBytes.Enqueue(toPushBytes);
     }
     public void EnqueueGivenAsCopy(byte[] toPushBytes)
     {
+        if (toPushBytes == null)
+        {
+            return;
+        }
+        if (m_waitingBytes == null)
+        {
+            m_waitingBytes = new Queue<byte[]>();
+        }
         m_waitingBytes.Enqueue(toPushBytes.ToArray());
     }
 
 
 
-    [ContextMenu("Push Random Integer")]
-    public void PushRandomInteger() { 
-    
-        byte[] b = BitConverter.GetBytes(UnityEngine.Random.Range(int.MinValue, int.MaxValue));
-        m_waitingBytes.Enqueue(b);
-    }
-    public void PushInteger(int value)
-    {
-        byte[] b = BitConverter.GetBytes(value);
-        m_waitingBytes.Enqueue(b);
-    }
+   
 
 
     public int GetWaitingBytes()
     {
+        if(m_waitingBytes==null)
+        {
+            return 0;
+        }
         return m_waitingBytes.Count;
+    }
+
+    public int GetEndPointsCount()
+    {
+        if (m_endpoints == null)
+        {
+            return 0;
+        }
+        return m_endpoints.Count;
     }
 
     public QueueByteToSendOnSideThread(System.Threading.ThreadPriority priority)
     {
-        Debug.Log("A");
+
+         m_keepAlive = true;
+         m_waitingBytes = new Queue<byte[]>();
+         m_endpoints = new List<IPEndPoint>();
+         m_lastSent = "";
+         m_sentByteCount=0;
+         m_sentTime=0;
+
+    Debug.Log("A");
         t = new Thread(new ThreadStart(PushInQueueAndWait));
         t.Priority = priority;
         t.IsBackground = true;

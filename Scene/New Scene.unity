@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 2015781217}
   - component: {fileID: 2015781216}
   - component: {fileID: 2015781218}
+  - component: {fileID: 2015781219}
   m_Layer: 0
   m_Name: Thread Sender
   m_TagString: Untagged
@@ -399,25 +400,54 @@ MonoBehaviour:
   m_GameObject: {fileID: 2015781215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b54c8e5360557ff45bcbe2a5939ce518, type: 3}
+  m_Script: {fileID: 11500000, guid: 71f69cca8eddfa74fb9f7b5c26198bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_onTick:
+  m_timeBeforeFirstTick: 0.1
+  m_timeBetweenTick: 1
+  m_tick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2015781216}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
+        m_TargetAssemblyTypeName: QueueByteToSendOnSideThreadMono, be.eloistree.udpthreadsender
+        m_MethodName: PushRandomInteger
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_timeBetWeenTick: 1
+      - m_Target: {fileID: 2015781219}
+        m_TargetAssemblyTypeName: UdpSenderRawByteArray, be.eloistree.networksenders
+        m_MethodName: SendRandomInteger
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2015781219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015781215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a9ebcabb6b2814eb60315f86713d6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ipAddress: 127.0.0.1
+  m_port: 3616
+  m_sent: 0
+  m_messageToSendCount: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
