@@ -1,7 +1,7 @@
 
 {                                                                   
-            "name": "be.eloistree.udpthreadsenderEditor",          
-    "references": ["be.eloistree.udpthreadsender"
+            "name": "be.elab.udpthreadsenderEditor",          
+    "references": ["be.elab.udpthreadsender"
 ],                                                              
     "optionalUnityReferences": [],                                  
     "includePlatforms": [                                           
