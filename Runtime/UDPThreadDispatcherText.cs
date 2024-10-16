@@ -8,11 +8,11 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UDPThreadDispatcher : MonoBehaviour
+public class UDPThreadDispatcherText : MonoBehaviour
 {
     public int m_portId = 2504;
     public float m_timeBetweenUnityCheck=0.05f;
-    public StringEvent m_messageReceived;
+    public UnityEvent<string> m_messageReceived;
     public System.Threading.ThreadPriority m_threadPriority;
 
     public Queue<string> m_receivedMessages = new Queue<string>();
@@ -22,6 +22,9 @@ public class UDPThreadDispatcher : MonoBehaviour
     public UdpClient m_listener;
     public IPEndPoint m_ipEndPoint;
     public bool m_hasBeenKilled;
+
+    public TextType m_textType = TextType.UTF8;
+    public enum TextType { UTF8, Unicode}
 
     public float m_timeBetweenStartThread = 0.1f;
     private IEnumerator Start()
@@ -98,7 +101,10 @@ public class UDPThreadDispatcher : MonoBehaviour
             {
 
                 Byte[] receiveBytes = m_listener.Receive(ref m_ipEndPoint);
-                string returnData = Encoding.UTF8.GetString(receiveBytes);
+                string returnData =
+                    m_textType== TextType.UTF8? 
+                    Encoding.UTF8.GetString(receiveBytes):
+                    Encoding.Unicode.GetString(receiveBytes);
                 m_receivedMessages.Enqueue(returnData);
                 //RemoteIpEndPoint.Address.ToString() --  RemoteIpEndPoint.Port.ToString());
             }
@@ -111,10 +117,5 @@ public class UDPThreadDispatcher : MonoBehaviour
     }
 
 
-    [System.Serializable]
-    public class StringEvent : UnityEvent<string>{ 
-    
-    }
-    
 }
 
