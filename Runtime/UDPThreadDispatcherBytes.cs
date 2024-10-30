@@ -116,12 +116,8 @@ public class UDPThreadDispatcherBytes : MonoBehaviour
         }
         m_wantThreadAlive = false;
     }
-
-
     [System.Serializable]
     public class BytesEvent : UnityEvent<byte[]>
-    {
-
-    }
+    {}
 }
 
