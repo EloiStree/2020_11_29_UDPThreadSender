@@ -43,6 +43,11 @@ public class UDPThreadSender : MonoBehaviour
     public Dictionary<string, UdpClientState> m_connections = new Dictionary<string, UdpClientState>();
 
 
+    public string m_lastSent;
+    [TextArea(0, 5)]
+    public string m_lastException;
+    public int m_maxByteDebugSize = 20;
+    public byte[] m_lastBytesSend;
 
 
     public void SendDirectlyToAll(byte[] bytes)
@@ -392,9 +397,6 @@ public class UDPThreadSender : MonoBehaviour
         return target;
     }
 
-    public string m_lastSent;
-    [TextArea(0, 5)]
-    public string m_lastException;
     public static string GetIpId(string ip, int port)
     {
         return GetIpId(ip, port.ToString());
@@ -433,6 +435,8 @@ public class UDPThreadSender : MonoBehaviour
         try
         {
             client.m_client.Send(sendBytes, sendBytes.Length);
+            if (sendBytes.Length <= m_maxByteDebugSize)
+                m_lastBytesSend= sendBytes;
         }
         catch (Exception e)
         {
