@@ -176,6 +176,37 @@ public class UDPThreadSender : MonoBehaviour
 
     }
 
+    public void AddTargetFromTextIPV4(string text) { 
+    
+        string[] lines = text.Split('\n');
+        for (int i = 0; i < lines.Length; i++)
+        {
+            AddTargetFromLineIPV4(lines[i]);
+        }
+    }
+
+    public void AddTargetFromLineIPV4(string line) { 
+    
+        string[] token = line.Split(':');
+        if (token.Length == 2)
+        {
+            int port = 0;
+            if (int.TryParse(token[1].Trim(), out port))
+            {
+                m_targetRegistered.Add(new TargetIpPort(token[0].Trim(), port));
+            }
+        }
+        if (token.Length == 3)
+        {
+            string name = token[0].Trim();
+            string ip = token[1].Trim();
+            string port = token[2].Trim();
+            AddAlias(name, ip, port);
+        }
+
+    }
+
+
 
     private void OnDestroy()
     {
