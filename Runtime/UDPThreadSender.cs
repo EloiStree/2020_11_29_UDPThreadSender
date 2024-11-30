@@ -6,6 +6,24 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+
+
+public struct STRUCT_IntegerBytePackage {
+
+    public int m_valueToSend;
+}
+public struct STRUCT_IndexIntegerBytePackage
+{
+    public int m_indexToSend;
+    public int m_valueToSend;
+}   
+public struct STRUCT_IndexIntegerDateBytePackage
+{
+    public int m_indexToSend;
+    public int m_valueToSend;
+    public ulong m_dateToSend;
+}
+
 public class UDPThreadSender : MonoBehaviour
 {
     public int m_messageInQueue=0;
@@ -23,6 +41,84 @@ public class UDPThreadSender : MonoBehaviour
     public List<AliasToGroupOfAlias> m_groupAlias = new List<AliasToGroupOfAlias>();
 
     public Dictionary<string, UdpClientState> m_connections = new Dictionary<string, UdpClientState>();
+
+
+
+
+    public void SendDirectlyToAll(byte[] bytes)
+    {
+        for (int i = 0; i < m_targetRegistered.Count; i++)
+        {
+            SendBytesTo(m_targetRegistered[i], bytes);
+        }
+    }
+
+    public void SendDirectlyToAll(STRUCT_IndexIntegerBytePackage package)
+    {
+        byte[] bytes = new byte[8];
+        BitConverter.GetBytes(package.m_indexToSend).CopyTo(bytes, 0);
+        BitConverter.GetBytes(package.m_valueToSend).CopyTo(bytes, 4);
+        SendDirectlyToAll(bytes);
+    }
+    public void SendDirectlyToAll(STRUCT_IntegerBytePackage package)
+    {
+        byte[] bytes = new byte[4];
+        BitConverter.GetBytes(package.m_valueToSend).CopyTo(bytes, 0);
+        SendDirectlyToAll(bytes);
+    }
+    public void SendDirectlyToAll(STRUCT_IndexIntegerDateBytePackage package)
+    {
+        byte[] bytes = new byte[16];
+        BitConverter.GetBytes(package.m_indexToSend).CopyTo(bytes, 0);
+        BitConverter.GetBytes(package.m_valueToSend).CopyTo(bytes, 4);
+        BitConverter.GetBytes(package.m_dateToSend).CopyTo(bytes, 8);
+        SendDirectlyToAll(bytes);
+    }
+    public void SendDirectlyToAllAsByte(char charAsByte) { 
+        SendDirectlyToAll(new byte[] { (byte)charAsByte });
+    }
+    public void SendDirectlyToAllAsByte(byte byteAsByte)
+    {
+        SendDirectlyToAll(new byte[] { byteAsByte });
+    }
+    public void SendDirectlyToAllAsByte(byte[] byteAsByte)
+    {
+        SendDirectlyToAll(byteAsByte);
+    }
+    public void SendDirectlyToAllAsInteger(int integer)
+    {
+        SendDirectlyToAll(BitConverter.GetBytes(integer));
+    }
+    public void SendDirectlyToAllAsIndexInteger(int index, int integer)
+    {
+        byte[] bytes = new byte[8];
+        BitConverter.GetBytes(index).CopyTo(bytes, 0);
+        BitConverter.GetBytes(integer).CopyTo(bytes, 4);
+        SendDirectlyToAll(bytes);
+    }
+    public void SendDirectlyToAllStringWithLineReturn(string text)
+    {
+        SendDirectlyToAllAsUTF8(text + "\n");
+    }   
+    public void SendDirectlyToAllAsUTF8(string text)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(text);
+        SendDirectlyToAll(bytes);
+    }
+
+    public void SendDirectlyToAllStringAsIntegerElseText(string text)
+    {
+        int value;
+        if (int.TryParse(text, out value))
+        {
+            SendDirectlyToAll(new STRUCT_IntegerBytePackage() { m_valueToSend = value });
+        }
+        else
+        {
+            SendDirectlyToAllAsUTF8(text);
+        }
+    }
+
 
 
     public void Clear()
@@ -315,7 +411,25 @@ public class UDPThreadSender : MonoBehaviour
     {
         m_lastSent = message;
         UdpClientState client = GetClient(ip, port);
-        Byte[] sendBytes  = Encoding.UTF8.GetBytes(message);
+        Byte[] sendBytes = Encoding.UTF8.GetBytes(message);
+        try
+        {
+            client.m_client.Send(sendBytes, sendBytes.Length);
+        }
+        catch (Exception e)
+        {
+            m_lastException = e.ToString();
+        }
+
+    }
+
+    public void SendBytesTo(TargetIpPort target, byte [] sendBytes)
+    {
+        SendBytesTo(target.m_ip, target.m_port, sendBytes);
+    }
+    public void SendBytesTo(string ip, int port, byte[] sendBytes)
+    {
+        UdpClientState client = GetClient(ip, port);
         try
         {
             client.m_client.Send(sendBytes, sendBytes.Length);
