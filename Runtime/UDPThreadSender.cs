@@ -27,6 +27,44 @@ public struct STRUCT_IndexIntegerDateBytePackage
 public class UDPThreadSender : MonoBehaviour
 {
     public int m_messageInQueue=0;
+
+
+    public void SetMainTargetIpv4(string targetIvp4Port) {
+
+        string [] splitByCommad = targetIvp4Port.Trim().Split(',');
+        int index = 0;
+
+        foreach (string target in splitByCommad)
+        {
+            targetIvp4Port = targetIvp4Port.Trim();
+            string[] tokens = targetIvp4Port.Split(':');
+            if (tokens.Length < 2)
+            {
+                return;
+            }
+
+            if (!int.TryParse(tokens[1], out int port))
+            {
+                return;
+            }
+
+            string label = "Main";
+            label += index;
+            for (int i = 0; i < m_singleAlias.Count; i++)
+            {
+                if (m_singleAlias[i].m_aliasNameId == label)
+                {
+                    m_singleAlias[i].m_ref.m_ip = targetIvp4Port.Trim();
+                    m_singleAlias[i].m_ref.m_port = port;
+                    index++;
+                    return;
+                }
+            }
+            IpSingleAlias ipSingleAlias = new IpSingleAlias(label, targetIvp4Port.Trim(), port);
+            m_singleAlias.Add(ipSingleAlias);
+        }
+
+    }
     public Queue<MessageToAll> m_toSendPackageToAll = new Queue<MessageToAll>();
     public Queue<MessageToIpPort> m_toSendPackageToTarget= new Queue<MessageToIpPort>();
 
