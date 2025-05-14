@@ -87,7 +87,7 @@ public class UDPThreadDispatcherBytes : MonoBehaviour
         while (m_receivedMessages.Count > 0)
         {
             m_lastReceived = m_receivedMessages.Dequeue();
-            m_messageReceived.Invoke(m_lastReceived);
+            m_messageReceived?.Invoke(m_lastReceived);
         }
     }
 
