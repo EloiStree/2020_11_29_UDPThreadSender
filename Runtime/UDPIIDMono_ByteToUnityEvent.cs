@@ -11,8 +11,9 @@ public class UDPIIDMono_ByteToUnityEvent : MonoBehaviour
     public UnityEvent<int, int, ulong> m_onIndexIntegerDateReceived;
     public UnityEvent<int, ulong> m_onIntegerDateReceivedDate;
 
-    public void PushIn(byte[] bytes) { 
-    
+    public void PushIn(byte[] bytes)
+    {
+
         if (bytes.Length == 4)
         {
             int value = System.BitConverter.ToInt32(bytes, 0);
@@ -38,6 +39,6 @@ public class UDPIIDMono_ByteToUnityEvent : MonoBehaviour
             m_onIntegerDateReceivedDate.Invoke(value, date);
         }
     }
-    
-    
+
+
 }
